@@ -1,5 +1,5 @@
 from Products.Archetypes.public import StringField, TextField
-from Products.Archetypes.public import TextWidget
+from Products.Archetypes.public import StringWidget
 from archetypes.schemaextender.field import ExtensionField
 from Products.CMFPlomino.interfaces import IPlominoDatabase
 from zope.component import adapts
@@ -23,7 +23,7 @@ class PlominoExtender(object):
     fields = [
         _ExtensionTextField(
             name='connString',
-            widget=TextWidget(
+            widget=StringWidget(
                 label=u"Connection String",
                 description=u"Connection String To a Database",
             ),
