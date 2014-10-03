@@ -14,7 +14,7 @@ long_description = (
     open('CHANGES.txt').read()
     + '\n')
 
-setup(name='gisweb.plomino.extensions',
+setup(name='plomino.extensions',
       version=version,
       description="Extend plomino with new funcionality",
       long_description=long_description,
@@ -30,7 +30,7 @@ setup(name='gisweb.plomino.extensions',
       license='gpl',
       packages=find_packages('src'),
       package_dir = {'': 'src'},
-      namespace_packages=['gisweb', ],
+      namespace_packages=['plomino', ],
       include_package_data=True,
       zip_safe=False,
       install_requires=[
