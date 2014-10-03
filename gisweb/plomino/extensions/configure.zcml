@@ -1,0 +1,27 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="gisweb.plomino.extensions">
+
+  <include package="archetypes.schemaextender" />
+  <include package="Products.CMFPlomino" />
+
+  <include package="Products.CMFPlomino.tests.schemaextender" />
+
+  <adapter factory=".extender.PlominoExtender"
+           provides="archetypes.schemaextender.interfaces.ISchemaExtender" /> 
+  
+  <five:registerPackage package="." initialize=".initialize" />
+
+  <genericsetup:registerProfile
+      name="default"
+      title="gisweb.plomino.extensions"
+      directory="profiles/default"
+      description="Installs the gisweb.plomino.extensions package"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+  <!-- -*- extra stuff goes here -*- -->
+  
+</configure>
