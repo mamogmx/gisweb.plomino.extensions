@@ -12,8 +12,8 @@ from .interfaces import IPlominoDatabaseExtension
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
 
-from Plomino.CMFPlomino.PlominoDatabase import PlominoDatabase
-from Plomino.CMFPlomino.PlominoDocument import PlominoDocument
+from Products.CMFPlomino.PlominoDatabase import PlominoDatabase
+from Products.CMFPlomino.PlominoDocument import PlominoDocument
 
 
 from Products.CMFPlomino.config import EDIT_PERMISSION
