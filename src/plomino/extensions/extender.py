@@ -19,7 +19,7 @@ from Products.CMFPlomino.PlominoDocument import PlominoDocument
 from Products.CMFPlomino.config import EDIT_PERMISSION
 
 
-from PGReplication import pgReplication
+from plomino.extensions.PGReplication import pgReplication
 
 
 class _ExtensionStringField(ExtensionField, StringField): pass
