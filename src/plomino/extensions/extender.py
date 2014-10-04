@@ -19,7 +19,7 @@ from Products.CMFPlomino.PlominoDocument import PlominoDocument
 from Products.CMFPlomino.config import EDIT_PERMISSION
 
 
-from plomino.extensions.PGReplication import pgReplication
+from plomino.extensions.pgReplication import pgReplication
 
 
 class _ExtensionStringField(ExtensionField, StringField): pass
@@ -116,4 +116,4 @@ def saveDoc(self, REQUEST, creation=False):
         redirect = self.absolute_url()
     REQUEST.RESPONSE.redirect(redirect)
 
-PlominoDocument.saveDocument=createDoc    
+PlominoDocument.saveDocument=saveDoc    

@@ -9,7 +9,7 @@
   <include package="Products.CMFPlomino" />
 
   <include package="Products.CMFPlomino.tests.schemaextender" />
-
+  
   <adapter factory=".extender.PlominoExtender"
            provides="archetypes.schemaextender.interfaces.ISchemaExtender" /> 
   
