@@ -2,7 +2,7 @@
 <!-- Register the package-specific browser layer, so that it will be activated
 when this product is installed. -->
 <layers>
-    <layer name="plomino.extensions.layer" 
-           interface="plomino.extensions.interfaces.IPlominoDatabaseExtension" />
+    <layer name="gisweb.plomino.extensions.layer" 
+           interface="gisweb.plomino.extensions.interfaces.IPlominoDatabaseExtension" />
 </layers>
 
