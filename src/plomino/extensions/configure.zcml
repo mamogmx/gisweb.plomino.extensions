@@ -23,5 +23,9 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
   <!-- -*- extra stuff goes here -*- -->
-  
+  <subscriber
+    for=".interfaces.IPlominoDOcument
+         Products.Archetypes.interfaces.IObjectEditedEvent"
+    handler=".save.save"
+    />
 </configure>

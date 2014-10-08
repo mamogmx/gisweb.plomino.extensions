@@ -6,7 +6,7 @@ from zope.component import adapts
 from zope.interface import implements
 from archetypes.schemaextender.interfaces import ISchemaExtender, IBrowserLayerAwareExtender
 from zope import event
-from Products.Archetypes.interfaces import IObjectInitializedEvent
+from Products.Archetypes.interfaces import IObjectEditedEvent
 from .interfaces import IPlominoDatabaseExtension
 
 from AccessControl import ClassSecurityInfo
@@ -19,7 +19,7 @@ from Products.CMFPlomino.PlominoDocument import PlominoDocument
 from Products.CMFPlomino.config import EDIT_PERMISSION
 
 
-from plomino.extensions.pgReplication import pgReplication
+
 
 
 class _ExtensionStringField(ExtensionField, StringField): pass
@@ -39,6 +39,7 @@ class PlominoExtender(object):
             widget=StringWidget(
                 label=u"Connection String",
                 description=u"Connection String To a Database",
+                size = 40,
             ),
         ),
         _ExtensionTextField(
@@ -101,8 +102,7 @@ def saveDoc(self, REQUEST, creation=False):
 
     # refresh computed values, run onSave, reindex
     self.save(form, creation)
-    repl = PGReplication(self)
-    repl.saveData()
+    events.notify(IObjectEditedEvent)
     
     redirect = REQUEST.get('plominoredirecturl')
     if not redirect:
