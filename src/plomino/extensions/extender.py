@@ -17,9 +17,9 @@ from Products.CMFPlomino.PlominoDocument import PlominoDocument
 from Products.CMFPlomino.exceptions import PlominoScriptException
 
 from Products.CMFPlomino.config import *
-from save import save
 
 
+from pgReplication import pgReplication
 
 
 class _ExtensionStringField(ExtensionField, StringField): pass
@@ -102,6 +102,7 @@ def saveDoc(self, REQUEST, creation=False):
 
     # refresh computed values, run onSave, reindex
     self.save(form, creation)
+    event.notify(IObjectEditedEvent)
     self.replicate()
     
     redirect = REQUEST.get('plominoredirecturl')
@@ -115,6 +116,14 @@ def saveDoc(self, REQUEST, creation=False):
     if not redirect:
         redirect = self.absolute_url()
     REQUEST.RESPONSE.redirect(redirect)
-def replicate(self):
     
-PlominoDocument.saveDocument=saveDoc    
+def replicate(self):
+    pgReplication(self)
+    
+    
+    
+    
+PlominoDocument.saveDocument=saveDoc 
+
+PlominoDocument.security.declareProtected(EDIT_PERMISSION, 'replicateDoc')   
+PlominoDocument.replicateDoc=replicate 
