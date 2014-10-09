@@ -11,8 +11,11 @@ src/plomino.extensions.egg-info/not-zip-safe
 src/plomino.extensions.egg-info/requires.txt
 src/plomino.extensions.egg-info/top_level.txt
 src/plomino/extensions/__init__.py
+src/plomino/extensions/datatables.py
 src/plomino/extensions/extender.py
 src/plomino/extensions/interfaces.py
+src/plomino/extensions/pgReplication.py
+src/plomino/extensions/save.py
 src/plomino/extensions/testing.py
 src/plomino/extensions/tests/__init__.py
 src/plomino/extensions/tests/test_example.py

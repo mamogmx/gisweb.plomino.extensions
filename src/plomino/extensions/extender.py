@@ -39,7 +39,7 @@ class PlominoExtender(object):
             widget=StringWidget(
                 label=u"Connection String",
                 description=u"Connection String To a Database",
-                size = 40,
+                size = 60,
             ),
         ),
         _ExtensionTextField(
@@ -102,8 +102,9 @@ def saveDoc(self, REQUEST, creation=False):
 
     # refresh computed values, run onSave, reindex
     self.save(form, creation)
-    event.notify(IObjectEditedEvent)
-    self.replicate()
+    if self.getItem('pg_replication_config',{}):
+        event.notify(IObjectEditedEvent)
+        self.replicateDoc()
     
     redirect = REQUEST.get('plominoredirecturl')
     if not redirect:
@@ -118,8 +119,8 @@ def saveDoc(self, REQUEST, creation=False):
     REQUEST.RESPONSE.redirect(redirect)
     
 def replicate(self):
-    pgReplication(self)
-    
+    pg = pgReplication()
+    pg.saveData(self)
     
     
     

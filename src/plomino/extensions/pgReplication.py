@@ -15,7 +15,7 @@ import DateTime
 from Products.CMFPlomino import PlominoDocument,PlominoForm
 
 from AccessControl.SecurityManagement import newSecurityManager
-
+from interfaces import IdbReplication
 
 
 class plominoData(object):
@@ -34,25 +34,22 @@ class pgReplication(object):
     plominoDoc = None
     
     def __init__(self):
-        implements(IdbReplication)
-        
-    def __new__(doc):
-        self.plominoDoc = doc
-        db = doc.getParentDatabase()
-        self.conn_string = db.connString
-        self.db_schema = db.dbSchema
-        self.db_table = db.dbTable
-        self.saveData()
+        pass
         
     def getPlominoValues(self):
         return dict(deepcopy(self.plominoDoc.items))
     
-    def saveData(self):
-        
+    def saveData(self,doc):
+        self.plominoDoc = doc
+        prm = doc.getItem('pg_replication_config',{})
+        self.conn_string = prm['connString']
+        self.db_schema = prm['dbSchema']
+        self.db_table = prm['dbTable']
+
         db = sql.create_engine(self.conn_string)
         metadata = sql.schema.MetaData(bind=db,reflect=True,schema=self.db_schema)
         table = sql.Table(self.db_table, metadata, autoload=True)
-        
+        orm.clear_mappers()
         rowmapper = orm.mapper(plominoData,table)
         Sess = orm.sessionmaker(bind = db)
         
