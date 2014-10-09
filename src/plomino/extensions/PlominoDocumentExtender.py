@@ -1,13 +1,5 @@
-from Products.Archetypes.public import StringField, TextField
-from Products.Archetypes.public import StringWidget
-from archetypes.schemaextender.field import ExtensionField
-from Products.CMFPlomino.interfaces import IPlominoDatabase,IPlominoForm
-from zope.component import adapts
-from zope.interface import implements
-from archetypes.schemaextender.interfaces import ISchemaExtender, IBrowserLayerAwareExtender
 from zope import event
 from Products.Archetypes.interfaces import IObjectEditedEvent
-from .interfaces import IPlominoDatabaseExtension,IPlominoFormExtension
 
 from AccessControl import ClassSecurityInfo
 from Globals import InitializeClass
@@ -23,55 +15,6 @@ from Products.CMFPlomino.config import *
 
 from pgReplication import pgReplication
 
- 
-
-
-class _ExtensionStringField(ExtensionField, StringField): pass
-
-class _ExtensionTextField(ExtensionField, TextField): pass
-
-
-
-        
-class PlominoFormExtender(object):
-    adapts(IPlominoForm)
-    implements(ISchemaExtender, IBrowserLayerAwareExtender)
-
-    layer = IPlominoFormExtension
-
-    fields = [
-        _ExtensionTextField(
-            name='connString',
-            widget=StringWidget(
-                label=u"Connection String",
-                description=u"Connection String To a Database",
-                size = 60,
-            ),
-        ),
-        _ExtensionTextField(
-            name='dbSchema',
-            widget=StringWidget(
-                label=u"Schema",
-                description=u"Schema",
-            ),
-            default = u'public',
-        ),
-        _ExtensionTextField(
-            name='dbTable',
-            widget=StringWidget(
-                label=u"Table",
-                description=u"table",
-            ),
-        ),
-    ]
-    
-    def __init__(self, context):
-        self.context = context
-    
-    def getFields(self):
-        return self.fields 
-        
-        
 InitializeClass(PlominoDocument)        
 PlominoDocument.security = ClassSecurityInfo()   
      
@@ -108,10 +51,10 @@ def saveDoc(self, REQUEST, creation=False):
 
     # refresh computed values, run onSave, reindex
     self.save(form, creation)
-    if self.getItem('pg_replication_config',{}):
+    if self.getItem('pg_replication_config',0):
         event.notify(IObjectEditedEvent)
         self.replicateDoc()
-    
+        
     redirect = REQUEST.get('plominoredirecturl')
     if not redirect:
         redirect = self.getItem("plominoredirecturl")
@@ -135,10 +78,3 @@ PlominoDocument.saveDocument=saveDoc
 
 PlominoDocument.security.declareProtected(EDIT_PERMISSION, 'replicateDoc')   
 PlominoDocument.replicateDoc=replicate 
-
-PlominoIndex.security.declareProtected(READ_PERMISSION, 'getFullLayout')
-InitializeClass(PlominoForm)
-def getFullLayout(self):
-    return self._get_html_content()
-
-PlominoForm.getFullLayout = getFullLayout

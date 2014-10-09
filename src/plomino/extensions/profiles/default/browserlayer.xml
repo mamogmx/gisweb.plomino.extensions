@@ -3,6 +3,8 @@
 when this product is installed. -->
 <layers>
     <layer name="plomino.extensions.layer" 
-           interface="plomino.extensions.interfaces.IPlominoDatabaseExtension" />
+           interface="plomino.extensions.interfaces.IPlominoDatabaseExtension" />-
+	<layer name="plomino.extensions.layer" 
+           interface="plomino.extensions.interfaces.IPlominoFormExtension" />
 </layers>
 

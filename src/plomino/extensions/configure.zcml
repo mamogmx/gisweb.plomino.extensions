@@ -10,9 +10,10 @@
 
   <include package="Products.CMFPlomino.tests.schemaextender" />
   
-  <adapter factory=".extender.PlominoExtender"
+  <adapter factory=".plominoDatabaseExtension.plominoDbExtender"
+           provides="archetypes.schemaextender.interfaces.ISchemaExtender" />
+    <adapter factory=".plominoFormExtension.PlominoFrmExtender"
            provides="archetypes.schemaextender.interfaces.ISchemaExtender" /> 
-  
   <five:registerPackage package="." initialize=".initialize" />
 
   <genericsetup:registerProfile
@@ -23,9 +24,14 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
   <!-- -*- extra stuff goes here -*- -->
-  <subscriber
-    for="Products.CMFPlomino.PlominoDocument.PlominoDocument
-         Products.Archetypes.interfaces.IObjectEditedEvent"
-    handler=".save.save"
+	<subscriber
+		for="Products.CMFPlomino.PlominoDocument.PlominoDocument
+			 zope.lifecycleevent.IObjectModifiedEvent"
+		handler=".save.save"
+    />
+	<subscriber
+		for="Products.CMFPlomino.PlominoDocument.PlominoDocument
+			 Products.Archetypes.interfaces.IObjectEditedEvent"
+		handler=".save.save2"
     />
 </configure>

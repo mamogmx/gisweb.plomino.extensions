@@ -41,10 +41,12 @@ class pgReplication(object):
     
     def saveData(self,doc):
         self.plominoDoc = doc
-        prm = doc.getItem('pg_replication_config',{})
-        self.conn_string = prm['connString']
-        self.db_schema = prm['dbSchema']
-        self.db_table = prm['dbTable']
+        plominoDb = doc.getParentDatabase()
+        prm = doc.getItem('pg_replication_config',0)
+
+        self.conn_string = plominoDb.connString
+        self.db_schema = plominoDb.dbSchema
+        self.db_table = plominoDb.dbTable
 
         db = sql.create_engine(self.conn_string)
         metadata = sql.schema.MetaData(bind=db,reflect=True,schema=self.db_schema)
