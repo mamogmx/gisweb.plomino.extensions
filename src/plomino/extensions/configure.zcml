@@ -24,7 +24,7 @@
       />
   <!-- -*- extra stuff goes here -*- -->
   <subscriber
-    for=".interfaces.IPlominoDOcument
+    for="Products.CMFPlomino.PlominoDocument.PlominoDocument
          Products.Archetypes.interfaces.IObjectEditedEvent"
     handler=".save.save"
     />

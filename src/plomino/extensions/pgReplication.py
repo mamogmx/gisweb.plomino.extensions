@@ -19,10 +19,12 @@ from AccessControl.SecurityManagement import newSecurityManager
 
 
 class plominoData(object):
-    def __init__(self, id, form, owner, data):
+    def __init__(self, id,db, form, owner,review_state, data):
         self.id = id
-        self.form = form
+        self.plominoform = form
+        self.plominodb = db
         self.owner = owner
+        self.review_state = review_state
         self.data = data
         
 class pgReplication(object):
@@ -40,6 +42,7 @@ class pgReplication(object):
         self.conn_string = db.connString
         self.db_schema = db.dbSchema
         self.db_table = db.dbTable
+        self.saveData()
         
     def getPlominoValues(self):
         return dict(deepcopy(self.plominoDoc.items))
@@ -57,10 +60,11 @@ class pgReplication(object):
         data = self.getPlominoValues()
         data = json.loads(json.dumps(data, default=DateTime.DateTime.ISO,use_decimal=True ))
         data['id'] = doc.getId()
-        data['form'] = doc.getForm().getFormName()
+        data['plominodb'] = doc.getParentDatabase().id
+        data['plominoform'] = doc.getForm().getFormName()
         data['owner'] = doc.getItem('owner','')
-        
-        row = plominoData(data['id'],data['form'],data['owner'],data) 
+        data['review_state'] = doc.getItem('iol','')
+        row = plominoData(data['id'],data['plominodb'],data['plominoform'],data['owner'],data['review_state'],data) 
         id = data['id']
         session = Sess()
         session.query(plominoData).filter_by(id=row.id).delete()

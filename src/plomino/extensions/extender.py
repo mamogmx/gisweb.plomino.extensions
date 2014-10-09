@@ -14,10 +14,10 @@ from Globals import InitializeClass
 
 from Products.CMFPlomino.PlominoDatabase import PlominoDatabase
 from Products.CMFPlomino.PlominoDocument import PlominoDocument
+from Products.CMFPlomino.exceptions import PlominoScriptException
 
-
-from Products.CMFPlomino.config import EDIT_PERMISSION
-
+from Products.CMFPlomino.config import *
+from save import save
 
 
 
@@ -102,7 +102,7 @@ def saveDoc(self, REQUEST, creation=False):
 
     # refresh computed values, run onSave, reindex
     self.save(form, creation)
-    events.notify(IObjectEditedEvent)
+    self.replicate()
     
     redirect = REQUEST.get('plominoredirecturl')
     if not redirect:
@@ -115,5 +115,6 @@ def saveDoc(self, REQUEST, creation=False):
     if not redirect:
         redirect = self.absolute_url()
     REQUEST.RESPONSE.redirect(redirect)
-
+def replicate(self):
+    
 PlominoDocument.saveDocument=saveDoc    
